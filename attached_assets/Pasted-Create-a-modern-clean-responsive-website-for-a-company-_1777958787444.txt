@@ -1,0 +1,103 @@
+Create a modern, clean, responsive website for a company named LeadEXA.
+
+The website should look professional, trustworthy, and data-driven, not spammy. Use a minimal design, white background, dark text, and blue/purple accents. Use a modern font like Inter or Poppins.
+
+WEBSITE STRUCTURE:
+1. HEADER (Sticky Navbar)
+Logo: "LeadEXA" (text logo)
+Navigation links:
+Home
+About
+Services
+Testimonials
+Contact
+CTA Button (highlighted):
+"Get Verified Trader Data"
+2. HERO SECTION
+Headline:
+"Access Verified Indian Traders Data That Actually Converts"
+Subheadline:
+"Stop wasting money on low-quality leads. Get access to high-intent, active traders with real investment records and behavior insights."
+CTA Button:
+"Request Data Access"
+(Scrolls to lead form section)
+3. SERVICES SECTION
+
+Title: "What We Offer"
+
+Include 4 cards:
+
+Verified Trader Data
+100% filtered and active traders
+No outdated or junk leads
+Investment-Based Segmentation
+Categorized by investment size and behavior
+High-Intent Leads
+Users actively trading
+Custom Data Solutions
+Tailored datasets for business needs
+4. WHY CHOOSE US SECTION
+Real & Active Traders Only
+No Random Scraped Data
+Better ROI on Campaigns
+Ideal for Brokers, Fintech & Advisors
+Regularly Updated Data
+5. TESTIMONIALS SECTION
+
+Add 3 testimonials:
+
+"LeadEXA completely changed our acquisition game. The quality of traders we received was far better than anything we tried before."
+— Rajesh Mehta, Stock Broker
+
+"We reduced our cost per acquisition by 40% using their segmented trader data."
+— Ankit Sharma, Fintech Founder
+
+"Finally, a data provider that delivers what they promise. Highly recommended."
+— Priya Verma, Investment Advisor
+
+6. LEAD FORM SECTION
+
+Title: "Get Access to Verified Trader Data"
+
+Fields:
+
+Full Name
+Company Name
+Email Address
+Phone Number
+Requirement (Dropdown: Broker / Fintech / Advisor / Other)
+
+Button:
+"Get Data Now"
+
+Add:
+
+Basic form validation
+Success message after submission
+7. CONTACT SECTION
+Email: support@leadexa.com
+Phone: +91 XXXXX XXXXX
+Text: "We’ll get back to you within 24 hours."
+8. FOOTER
+Company Name: LeadEXA
+Short description:
+"Providing high-quality, verified Indian traders data for businesses that want real results."
+Links:
+Privacy Policy
+Terms of Service
+Disclaimer:
+"LeadEXA provides data for business and marketing purposes only. We ensure compliance with applicable data usage policies."
+Copyright:
+© 2026 LeadEXA. All rights reserved.
+DESIGN & FUNCTIONAL REQUIREMENTS:
+Fully mobile responsive
+Smooth scrolling
+Minimal animations (fade-in sections)
+Clean UI with good spacing
+Add a floating WhatsApp contact button
+Highlight CTA buttons with color contrast
+TECH REQUIREMENTS:
+Use HTML, CSS, and JavaScript
+Keep code simple and well-structured
+No unnecessary complexity
+Fast loading
