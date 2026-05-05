@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +26,6 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 
-// Form Schema
 const formSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
   companyName: z.string().min(2, "Company name must be at least 2 characters"),
@@ -77,14 +75,13 @@ export default function Home() {
 
   return (
     <div className="min-h-[100dvh] bg-background font-sans text-foreground overflow-x-hidden">
+
       {/* 1. STICKY NAVBAR */}
-      <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center">
-            <span className="text-2xl font-bold tracking-tight text-foreground">
-              Lead<span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">EXA</span>
-            </span>
-          </div>
+      <header className="fixed top-0 w-full z-50 bg-background/90 backdrop-blur-md border-b border-border">
+        <div className="container mx-auto px-4 md:px-6 h-14 md:h-16 flex items-center justify-between">
+          <span className="text-xl md:text-2xl font-bold tracking-tight">
+            Lead<span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">EXA</span>
+          </span>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
@@ -92,25 +89,36 @@ export default function Home() {
             <button onClick={() => scrollToSection("services")} className="text-sm font-medium hover:text-primary transition-colors">Services</button>
             <button onClick={() => scrollToSection("testimonials")} className="text-sm font-medium hover:text-primary transition-colors">Testimonials</button>
             <button onClick={() => scrollToSection("contact")} className="text-sm font-medium hover:text-primary transition-colors">Contact</button>
-            <Button onClick={() => scrollToSection("lead-form")} className="shadow-sm">
+            <Button onClick={() => scrollToSection("lead-form")} className="shadow-sm" data-testid="button-nav-cta">
               Get Verified Trader Data
             </Button>
           </nav>
 
           {/* Mobile Menu Toggle */}
-          <button className="md:hidden p-2 text-foreground" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          <button
+            className="md:hidden p-2 text-foreground"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            data-testid="button-menu-toggle"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
         {/* Mobile Nav Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 w-full bg-background border-b border-border px-4 py-4 flex flex-col gap-4 shadow-lg">
-            <button onClick={() => scrollToSection("home")} className="text-left text-sm font-medium p-2">Home</button>
-            <button onClick={() => scrollToSection("services")} className="text-left text-sm font-medium p-2">Services</button>
-            <button onClick={() => scrollToSection("testimonials")} className="text-left text-sm font-medium p-2">Testimonials</button>
-            <button onClick={() => scrollToSection("contact")} className="text-left text-sm font-medium p-2">Contact</button>
-            <Button onClick={() => scrollToSection("lead-form")} className="w-full mt-2">
+          <div className="md:hidden absolute top-14 left-0 w-full bg-background border-b border-border px-4 py-3 flex flex-col gap-1 shadow-lg">
+            {["home", "services", "testimonials", "contact"].map((id) => (
+              <button
+                key={id}
+                onClick={() => scrollToSection(id)}
+                className="text-left text-sm font-medium px-3 py-2.5 rounded-lg hover:bg-secondary transition-colors capitalize"
+                data-testid={`button-nav-${id}`}
+              >
+                {id.charAt(0).toUpperCase() + id.slice(1)}
+              </button>
+            ))}
+            <Button onClick={() => scrollToSection("lead-form")} className="w-full mt-2 mb-1">
               Get Verified Trader Data
             </Button>
           </div>
@@ -118,148 +126,119 @@ export default function Home() {
       </header>
 
       {/* 2. HERO SECTION */}
-      <section id="home" className="pt-32 pb-20 md:pt-40 md:pb-28 px-4 relative overflow-hidden flex flex-col items-center text-center">
-        {/* Abstract Background Element */}
+      <section id="home" className="pt-24 pb-12 md:pt-40 md:pb-24 px-4 relative overflow-hidden flex flex-col items-center text-center">
         <div className="absolute inset-0 -z-10 flex justify-center items-center opacity-30 pointer-events-none">
-          <div className="w-[800px] h-[800px] bg-gradient-to-tr from-primary/20 to-accent/20 rounded-full blur-3xl" />
+          <div className="w-[600px] h-[600px] md:w-[800px] md:h-[800px] bg-gradient-to-tr from-primary/20 to-accent/20 rounded-full blur-3xl" />
         </div>
-        
+
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeUp}
-          className="max-w-4xl mx-auto"
+          className="max-w-4xl mx-auto w-full"
         >
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-            Access Verified Indian Traders Data That <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Actually Converts</span>
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-4 md:mb-6 leading-tight">
+            Access Verified Indian Traders Data That{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Actually Converts</span>
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base md:text-xl text-muted-foreground mb-7 md:mb-10 max-w-2xl mx-auto leading-relaxed px-2">
             Stop wasting money on low-quality leads. Get access to high-intent, active traders with real investment records and behavior insights.
           </p>
-          <Button size="lg" className="text-lg px-8 py-6 h-auto shadow-md" onClick={() => scrollToSection("lead-form")}>
+          <Button
+            size="lg"
+            className="text-base md:text-lg px-6 md:px-8 py-5 md:py-6 h-auto shadow-md w-full sm:w-auto"
+            onClick={() => scrollToSection("lead-form")}
+            data-testid="button-hero-cta"
+          >
             Request Data Access
           </Button>
         </motion.div>
       </section>
 
       {/* 3. SERVICES SECTION */}
-      <section id="services" className="py-20 bg-secondary/30 px-4">
+      <section id="services" className="py-14 md:py-20 bg-secondary/30 px-4">
         <div className="container mx-auto max-w-6xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">What We Offer</h2>
-            <div className="w-20 h-1 bg-primary mx-auto rounded-full" />
+            <h2 className="text-2xl md:text-4xl font-bold mb-3">What We Offer</h2>
+            <div className="w-16 h-1 bg-primary mx-auto rounded-full" />
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-              <Card className="h-full border-none shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-8 flex flex-col gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <CheckCircle2 size={24} />
-                  </div>
-                  <h3 className="text-xl font-semibold">Verified Trader Data</h3>
-                  <p className="text-muted-foreground">100% filtered and active traders. No outdated or junk leads.</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
-              <Card className="h-full border-none shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-8 flex flex-col gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
-                    <BarChart3 size={24} />
-                  </div>
-                  <h3 className="text-xl font-semibold">Investment-Based Segmentation</h3>
-                  <p className="text-muted-foreground">Categorized by investment size and behavior patterns.</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}>
-              <Card className="h-full border-none shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-8 flex flex-col gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <Zap size={24} />
-                  </div>
-                  <h3 className="text-xl font-semibold">High-Intent Leads</h3>
-                  <p className="text-muted-foreground">Users who are actively trading and looking for new opportunities.</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}>
-              <Card className="h-full border-none shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-8 flex flex-col gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
-                    <Users size={24} />
-                  </div>
-                  <h3 className="text-xl font-semibold">Custom Data Solutions</h3>
-                  <p className="text-muted-foreground">Tailored datasets curated specifically for your business needs.</p>
-                </CardContent>
-              </Card>
-            </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
+            {[
+              { icon: <CheckCircle2 size={22} />, color: "bg-primary/10 text-primary", title: "Verified Trader Data", desc: "100% filtered and active traders. No outdated or junk leads." },
+              { icon: <BarChart3 size={22} />, color: "bg-accent/10 text-accent", title: "Investment-Based Segmentation", desc: "Categorized by investment size and behavior patterns." },
+              { icon: <Zap size={22} />, color: "bg-primary/10 text-primary", title: "High-Intent Leads", desc: "Users who are actively trading and looking for new opportunities." },
+              { icon: <Users size={22} />, color: "bg-accent/10 text-accent", title: "Custom Data Solutions", desc: "Tailored datasets curated specifically for your business needs." },
+            ].map((card, i) => (
+              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
+                <Card className="h-full border-none shadow-sm hover:shadow-md transition-shadow">
+                  <CardContent className="p-5 md:p-8 flex flex-col gap-3">
+                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center ${card.color}`}>
+                      {card.icon}
+                    </div>
+                    <h3 className="text-lg font-semibold">{card.title}</h3>
+                    <p className="text-muted-foreground text-sm md:text-base">{card.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* 4. WHY CHOOSE US SECTION */}
-      <section className="py-20 px-4 bg-background">
+      <section className="py-14 md:py-20 px-4 bg-background">
         <div className="container mx-auto max-w-5xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="flex flex-col md:flex-row gap-12 items-center"
+            className="flex flex-col md:flex-row gap-8 md:gap-12 items-start md:items-center"
           >
-            <div className="md:w-1/2">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Industry Leaders Choose LeadEXA</h2>
-              <p className="text-lg text-muted-foreground mb-8">
+            <div className="w-full md:w-1/2">
+              <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6">Why Industry Leaders Choose LeadEXA</h2>
+              <p className="text-base text-muted-foreground mb-6">
                 We don't just sell lists; we provide verified intelligence that drives actual ROI.
               </p>
-              <ul className="space-y-4">
+              <ul className="space-y-3">
                 {[
                   "Real & Active Traders Only",
                   "No Random Scraped Data",
                   "Better ROI on Campaigns",
                   "Ideal for Brokers, Fintech & Advisors",
-                  "Regularly Updated Data"
+                  "Regularly Updated Data",
                 ].map((point, i) => (
                   <li key={i} className="flex items-center gap-3">
-                    <CheckCircle2 className="text-primary" size={20} />
-                    <span className="font-medium text-foreground">{point}</span>
+                    <CheckCircle2 className="text-primary shrink-0" size={18} />
+                    <span className="font-medium text-sm md:text-base">{point}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="md:w-1/2 w-full">
-              <div className="bg-secondary rounded-2xl p-8 shadow-inner border border-border">
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded bg-background flex items-center justify-center font-bold text-primary shadow-sm">98%</div>
-                    <div>
-                      <h4 className="font-bold">Accuracy Rate</h4>
-                      <p className="text-sm text-muted-foreground">Cleaned & verified</p>
+            <div className="w-full md:w-1/2">
+              <div className="bg-secondary rounded-2xl p-5 md:p-8 shadow-inner border border-border">
+                <div className="space-y-5">
+                  {[
+                    { value: "98%", color: "text-primary", label: "Accuracy Rate", sub: "Cleaned & verified" },
+                    { value: "24h", color: "text-accent", label: "Update Frequency", sub: "Always fresh data" },
+                    { value: "3x", color: "text-primary", label: "Average ROI", sub: "Compared to generic lists" },
+                  ].map((stat, i) => (
+                    <div key={i} className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded bg-background flex items-center justify-center font-bold text-sm shadow-sm shrink-0 ${stat.color}`}>{stat.value}</div>
+                      <div>
+                        <h4 className="font-bold text-sm md:text-base">{stat.label}</h4>
+                        <p className="text-xs md:text-sm text-muted-foreground">{stat.sub}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded bg-background flex items-center justify-center font-bold text-accent shadow-sm">24h</div>
-                    <div>
-                      <h4 className="font-bold">Update Frequency</h4>
-                      <p className="text-sm text-muted-foreground">Always fresh data</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded bg-background flex items-center justify-center font-bold text-primary shadow-sm">3x</div>
-                    <div>
-                      <h4 className="font-bold">Average ROI</h4>
-                      <p className="text-sm text-muted-foreground">Compared to generic lists</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -268,8 +247,7 @@ export default function Home() {
       </section>
 
       {/* DATA TRUST SECTION */}
-      <section className="py-24 px-4 bg-gradient-to-br from-[hsl(222,47%,8%)] to-[hsl(250,60%,12%)] text-white relative overflow-hidden">
-        {/* Background decoration */}
+      <section className="py-14 md:py-24 px-4 bg-gradient-to-br from-[hsl(222,47%,8%)] to-[hsl(250,60%,12%)] text-white relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none opacity-10">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent rounded-full blur-3xl" />
@@ -281,44 +259,45 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-16"
           >
             <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary mb-4 border border-primary/30 rounded-full px-4 py-1 bg-primary/10">
               How Our Data Works
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-5 text-white">
-              A Data Pool Built for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Serious Results</span>
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 text-white">
+              A Data Pool Built for{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Serious Results</span>
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto text-lg leading-relaxed">
+            <p className="text-white/60 max-w-2xl mx-auto text-base md:text-lg leading-relaxed px-2">
               We work with a large and continuously expanding pool of Indian traders data, carefully maintained to ensure it remains fresh, relevant, and usable for real business outcomes.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-16">
             {[
               {
-                icon: <Database size={22} />,
+                icon: <Database size={20} />,
                 title: "Continuously Growing Pool",
                 body: "Our dataset is not static. We continuously expand and onboard new trader profiles, ensuring you always have access to the latest market participants — not stale records from months ago.",
                 color: "text-primary",
                 bg: "bg-primary/10 border-primary/20",
               },
               {
-                icon: <RefreshCw size={22} />,
+                icon: <RefreshCw size={20} />,
                 title: "Structured & Refined Regularly",
                 body: "Our systems regularly refine and structure the data with meaningful insights, helping you reach traders who are more likely to engage with your product or service.",
                 color: "text-accent",
                 bg: "bg-accent/10 border-accent/20",
               },
               {
-                icon: <Lock size={22} />,
+                icon: <Lock size={20} />,
                 title: "Controlled Distribution",
                 body: "To maintain quality and reduce oversaturation, we follow a controlled distribution approach. Datasets shared with clients are not widely reused, allowing you to work with more exclusive and effective data.",
                 color: "text-primary",
                 bg: "bg-primary/10 border-primary/20",
               },
               {
-                icon: <ShieldCheck size={22} />,
+                icon: <ShieldCheck size={20} />,
                 title: "Compliance-First Approach",
                 body: "Every dataset we deliver is handled with adherence to applicable data usage policies. We take compliance seriously so you can run your campaigns with confidence.",
                 color: "text-accent",
@@ -333,35 +312,35 @@ export default function Home() {
                 variants={fadeUp}
                 custom={i}
               >
-                <div className={`rounded-2xl border p-8 h-full flex flex-col gap-4 ${item.bg} backdrop-blur-sm`}>
-                  <div className={`w-11 h-11 rounded-lg bg-white/5 flex items-center justify-center ${item.color}`}>
+                <div className={`rounded-2xl border p-5 md:p-8 h-full flex flex-col gap-3 ${item.bg} backdrop-blur-sm`}>
+                  <div className={`w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center ${item.color}`}>
                     {item.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                  <h3 className="text-base md:text-lg font-semibold text-white">{item.title}</h3>
                   <p className="text-white/60 text-sm leading-relaxed">{item.body}</p>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Bottom trust bar */}
+          {/* Stats bar */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="border border-white/10 rounded-2xl p-8 bg-white/5 backdrop-blur-sm"
+            className="border border-white/10 rounded-2xl p-5 md:p-8 bg-white/5 backdrop-blur-sm"
           >
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-8 text-center">
               {[
                 { value: "10L+", label: "Trader Profiles" },
                 { value: "98%", label: "Data Accuracy" },
                 { value: "Weekly", label: "Refresh Cycle" },
-                { value: "Exclusive", label: "Distribution Policy" },
+                { value: "Exclusive", label: "Distribution" },
               ].map((stat, i) => (
                 <div key={i} data-testid={`stat-${stat.label.toLowerCase().replace(/\s+/g, "-")}`}>
-                  <p className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-1">{stat.value}</p>
-                  <p className="text-sm text-white/50 font-medium">{stat.label}</p>
+                  <p className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-1">{stat.value}</p>
+                  <p className="text-xs md:text-sm text-white/50 font-medium">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -370,59 +349,43 @@ export default function Home() {
       </section>
 
       {/* 5. TESTIMONIALS SECTION */}
-      <section id="testimonials" className="py-20 bg-foreground text-background px-4">
+      <section id="testimonials" className="py-14 md:py-20 bg-foreground text-background px-4">
         <div className="container mx-auto max-w-6xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Trusted by Professionals</h2>
-            <div className="w-20 h-1 bg-accent mx-auto rounded-full" />
+            <h2 className="text-2xl md:text-4xl font-bold mb-3">Trusted by Professionals</h2>
+            <div className="w-16 h-1 bg-accent mx-auto rounded-full" />
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-              <Card className="h-full bg-background/5 border-none text-background">
-                <CardContent className="p-8 flex flex-col justify-between h-full">
-                  <p className="text-lg italic mb-6">"LeadEXA completely changed our acquisition game. The quality of traders we received was far better than anything we tried before."</p>
-                  <div>
-                    <h4 className="font-bold text-primary-foreground">Rajesh Mehta</h4>
-                    <p className="text-sm text-muted-foreground">Stock Broker</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: 0.1 }}>
-              <Card className="h-full bg-background/5 border-none text-background">
-                <CardContent className="p-8 flex flex-col justify-between h-full">
-                  <p className="text-lg italic mb-6">"We reduced our cost per acquisition by 40% using their segmented trader data."</p>
-                  <div>
-                    <h4 className="font-bold text-primary-foreground">Ankit Sharma</h4>
-                    <p className="text-sm text-muted-foreground">Fintech Founder</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: 0.2 }}>
-              <Card className="h-full bg-background/5 border-none text-background">
-                <CardContent className="p-8 flex flex-col justify-between h-full">
-                  <p className="text-lg italic mb-6">"Finally, a data provider that delivers what they promise. Highly recommended."</p>
-                  <div>
-                    <h4 className="font-bold text-primary-foreground">Priya Verma</h4>
-                    <p className="text-sm text-muted-foreground">Investment Advisor</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+            {[
+              { quote: "LeadEXA completely changed our acquisition game. The quality of traders we received was far better than anything we tried before.", name: "Rajesh Mehta", role: "Stock Broker" },
+              { quote: "We reduced our cost per acquisition by 40% using their segmented trader data.", name: "Ankit Sharma", role: "Fintech Founder" },
+              { quote: "Finally, a data provider that delivers what they promise. Highly recommended.", name: "Priya Verma", role: "Investment Advisor" },
+            ].map((t, i) => (
+              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.1 }}>
+                <Card className="h-full bg-background/5 border-none text-background">
+                  <CardContent className="p-5 md:p-8 flex flex-col justify-between h-full gap-4">
+                    <p className="text-base italic leading-relaxed">"{t.quote}"</p>
+                    <div>
+                      <h4 className="font-bold text-sm">{t.name}</h4>
+                      <p className="text-xs text-muted-foreground">{t.role}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* 6. LEAD FORM SECTION */}
-      <section id="lead-form" className="py-20 px-4 bg-secondary/50">
+      <section id="lead-form" className="py-14 md:py-20 px-4 bg-secondary/50">
         <div className="container mx-auto max-w-3xl">
           <motion.div
             initial="hidden"
@@ -431,15 +394,15 @@ export default function Home() {
             variants={fadeUp}
           >
             <Card className="border-none shadow-lg">
-              <CardContent className="p-8 md:p-12">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold mb-3">Get Access to Verified Trader Data</h2>
-                  <p className="text-muted-foreground">Fill out the form below and our team will get in touch with you shortly.</p>
+              <CardContent className="p-5 md:p-12">
+                <div className="text-center mb-6 md:mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-2">Get Access to Verified Trader Data</h2>
+                  <p className="text-muted-foreground text-sm md:text-base">Fill out the form below and our team will get in touch with you shortly.</p>
                 </div>
 
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                       <FormField
                         control={form.control}
                         name="fullName"
@@ -447,7 +410,7 @@ export default function Home() {
                           <FormItem>
                             <FormLabel>Full Name</FormLabel>
                             <FormControl>
-                              <Input placeholder="John Doe" {...field} className="bg-background" />
+                              <Input placeholder="John Doe" {...field} className="bg-background" data-testid="input-full-name" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -460,14 +423,14 @@ export default function Home() {
                           <FormItem>
                             <FormLabel>Company Name</FormLabel>
                             <FormControl>
-                              <Input placeholder="Acme Finance" {...field} className="bg-background" />
+                              <Input placeholder="Acme Finance" {...field} className="bg-background" data-testid="input-company-name" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                       <FormField
                         control={form.control}
                         name="email"
@@ -475,7 +438,7 @@ export default function Home() {
                           <FormItem>
                             <FormLabel>Email Address</FormLabel>
                             <FormControl>
-                              <Input placeholder="john@example.com" {...field} className="bg-background" />
+                              <Input placeholder="john@example.com" {...field} className="bg-background" data-testid="input-email" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -488,7 +451,7 @@ export default function Home() {
                           <FormItem>
                             <FormLabel>Phone Number</FormLabel>
                             <FormControl>
-                              <Input placeholder="+91 98765 43210" {...field} className="bg-background" />
+                              <Input placeholder="+91 98765 43210" {...field} className="bg-background" data-testid="input-phone" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -503,7 +466,7 @@ export default function Home() {
                           <FormLabel>Requirement</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-background">
+                              <SelectTrigger className="bg-background" data-testid="select-requirement">
                                 <SelectValue placeholder="Select your industry" />
                               </SelectTrigger>
                             </FormControl>
@@ -518,7 +481,7 @@ export default function Home() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" className="w-full text-lg py-6 h-auto mt-4" data-testid="button-submit-lead">
+                    <Button type="submit" className="w-full text-base md:text-lg py-5 md:py-6 h-auto mt-2" data-testid="button-submit-lead">
                       Get Data Now
                     </Button>
                   </form>
@@ -530,7 +493,7 @@ export default function Home() {
       </section>
 
       {/* 7. CONTACT SECTION */}
-      <section id="contact" className="py-20 px-4 bg-background border-t border-border text-center">
+      <section id="contact" className="py-14 md:py-20 px-4 bg-background border-t border-border text-center">
         <div className="container mx-auto max-w-2xl">
           <motion.div
             initial="hidden"
@@ -538,41 +501,43 @@ export default function Home() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <h2 className="text-3xl font-bold mb-8">Contact Us</h2>
-            <div className="flex flex-col md:flex-row justify-center gap-8 mb-8">
-              <div className="p-6 bg-secondary/50 rounded-xl border border-border">
-                <p className="text-sm text-muted-foreground mb-1">Email us at</p>
-                <p className="font-semibold text-lg">support@leadexa.com</p>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">Contact Us</h2>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-8 mb-6">
+              <div className="p-5 bg-secondary/50 rounded-xl border border-border flex-1">
+                <p className="text-xs text-muted-foreground mb-1">Email us at</p>
+                <a href="mailto:support@leadexa.com" className="font-semibold text-base hover:text-primary transition-colors" data-testid="link-email">
+                  support@leadexa.com
+                </a>
               </div>
-              <div className="p-6 bg-secondary/50 rounded-xl border border-border">
-                <p className="text-sm text-muted-foreground mb-1">Call us</p>
-                <p className="font-semibold text-lg">+91 XXXXX XXXXX</p>
+              <div className="p-5 bg-secondary/50 rounded-xl border border-border flex-1">
+                <p className="text-xs text-muted-foreground mb-1">Call us</p>
+                <p className="font-semibold text-base">+91 XXXXX XXXXX</p>
               </div>
             </div>
-            <p className="text-muted-foreground">We'll get back to you within 24 hours.</p>
+            <p className="text-muted-foreground text-sm">We'll get back to you within 24 hours.</p>
           </motion.div>
         </div>
       </section>
 
       {/* 8. FOOTER */}
-      <footer className="bg-foreground text-background py-12 px-4">
+      <footer className="bg-foreground text-background py-10 md:py-12 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-6 md:mb-8">
             <div className="max-w-sm">
-              <span className="text-2xl font-bold tracking-tight mb-4 block">
+              <span className="text-xl font-bold tracking-tight mb-3 block">
                 Lead<span className="text-primary-foreground">EXA</span>
               </span>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 Providing high-quality, verified Indian traders data for businesses that want real results.
               </p>
             </div>
-            <div className="flex gap-6">
+            <div className="flex gap-5">
               <a href="#" className="text-sm text-muted-foreground hover:text-primary-foreground transition-colors">Privacy Policy</a>
               <a href="#" className="text-sm text-muted-foreground hover:text-primary-foreground transition-colors">Terms of Service</a>
             </div>
           </div>
-          <div className="border-t border-background/20 pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <p className="text-xs text-muted-foreground max-w-2xl">
+          <div className="border-t border-background/20 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+            <p className="text-xs text-muted-foreground max-w-2xl leading-relaxed">
               Disclaimer: LeadEXA provides data for business and marketing purposes only. We ensure compliance with applicable data usage policies.
             </p>
             <p className="text-xs text-muted-foreground shrink-0">
@@ -587,11 +552,11 @@ export default function Home() {
         href="https://wa.me/placeholder"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-xl hover:scale-110 transition-transform flex items-center justify-center"
+        className="fixed bottom-5 right-4 md:bottom-6 md:right-6 z-50 bg-[#25D366] text-white p-3.5 md:p-4 rounded-full shadow-xl hover:scale-110 transition-transform flex items-center justify-center"
         aria-label="Contact us on WhatsApp"
         data-testid="link-whatsapp"
       >
-        <SiWhatsapp size={28} />
+        <SiWhatsapp size={24} className="md:w-7 md:h-7" />
       </a>
     </div>
   );
