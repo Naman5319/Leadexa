@@ -153,9 +153,10 @@ export default function Home() {
       </header>
 
       {/* 2. HERO SECTION */}
-      <section id="home" className="pt-24 pb-12 md:pt-40 md:pb-24 px-4 relative overflow-hidden flex flex-col items-center text-center">
-        <div className="absolute inset-0 -z-10 flex justify-center items-center opacity-30 pointer-events-none">
-          <div className="w-[600px] h-[600px] md:w-[800px] md:h-[800px] bg-gradient-to-tr from-primary/20 to-accent/20 rounded-full blur-3xl" />
+      <section id="home" className="pt-28 pb-16 md:pt-44 md:pb-28 px-5 relative overflow-hidden flex flex-col items-center text-center">
+        {/* Background glow */}
+        <div className="absolute inset-0 -z-10 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] md:w-[900px] md:h-[900px] bg-gradient-to-tr from-primary/15 to-accent/15 rounded-full blur-3xl" />
         </div>
 
         <motion.div
@@ -163,23 +164,42 @@ export default function Home() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeUp}
-          className="max-w-4xl mx-auto w-full"
+          className="max-w-4xl mx-auto w-full flex flex-col items-center"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-4 md:mb-6 leading-tight">
-            Access Verified Indian Traders Data That{" "}
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/20 rounded-full px-4 py-1.5 mb-6 md:mb-8">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0" />
+            <span className="text-xs font-semibold text-primary tracking-wide uppercase">Verified Indian Traders Data</span>
+          </div>
+
+          <h1 className="text-[2.1rem] sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-5 md:mb-6 leading-[1.15]">
+            The Data That{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Actually Converts</span>
+            <br className="hidden sm:block" />
+            {" "}Indian Traders
           </h1>
-          <p className="text-base md:text-xl text-muted-foreground mb-7 md:mb-10 max-w-2xl mx-auto leading-relaxed px-2">
+          <p className="text-[0.95rem] md:text-xl text-muted-foreground mb-8 md:mb-10 max-w-xl mx-auto leading-relaxed">
             Stop wasting money on low-quality leads. Get access to high-intent, active traders with real investment records and behavior insights.
           </p>
+
           <Button
             size="lg"
-            className="text-base md:text-lg px-6 md:px-8 py-5 md:py-6 h-auto shadow-md w-full sm:w-auto"
+            className="text-base md:text-lg px-8 py-5 md:py-6 h-auto shadow-lg w-full sm:w-auto rounded-xl"
             onClick={() => scrollToSection("lead-form")}
             data-testid="button-hero-cta"
           >
             Request Data Access
           </Button>
+
+          {/* Trust row */}
+          <div className="mt-8 md:mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+            {["10L+ Verified Profiles", "98% Accuracy", "No Junk Leads", "Quick Response"].map((item, i) => (
+              <span key={i} className="flex items-center gap-1.5">
+                <CheckCircle2 size={13} className="text-primary shrink-0" />
+                {item}
+              </span>
+            ))}
+          </div>
         </motion.div>
       </section>
 
