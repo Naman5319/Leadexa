@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "moduleResolution": "bundler"
+  },
+  "include": [
+    "**/*.ts",
+    "../artifacts/api-server/src/**/*.ts",
+    "../lib/**/*.ts"
+  ]
+}
