@@ -77,9 +77,10 @@ export default function Home() {
     <div className="min-h-[100dvh] bg-background font-sans text-foreground overflow-x-hidden">
 
       {/* 1. STICKY NAVBAR */}
-      <header className="fixed top-0 w-full z-50 bg-background/90 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-4 md:px-6 h-14 md:h-16 flex items-center justify-between">
-          <span className="text-xl md:text-2xl font-bold tracking-tight">
+      <header className="fixed top-0 w-full z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm">
+        <div className="container mx-auto px-4 md:px-6 h-14 md:h-16 flex items-center justify-between gap-3">
+          {/* Logo */}
+          <span className="text-xl md:text-2xl font-bold tracking-tight shrink-0">
             Lead<span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">EXA</span>
           </span>
 
@@ -94,33 +95,59 @@ export default function Home() {
             </Button>
           </nav>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden p-2 text-foreground"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            data-testid="button-menu-toggle"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          {/* Mobile: mini CTA + hamburger */}
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={() => scrollToSection("lead-form")}
+              className="text-xs font-semibold px-3 py-1.5 rounded-full bg-primary text-white shadow-sm active:scale-95 transition-transform"
+              data-testid="button-mobile-cta"
+            >
+              Get Data
+            </button>
+            <button
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-secondary border border-border text-foreground active:scale-95 transition-transform"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              data-testid="button-menu-toggle"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Nav Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-14 left-0 w-full bg-background border-b border-border px-4 py-3 flex flex-col gap-1 shadow-lg">
-            {["home", "services", "testimonials", "contact"].map((id) => (
-              <button
-                key={id}
-                onClick={() => scrollToSection(id)}
-                className="text-left text-sm font-medium px-3 py-2.5 rounded-lg hover:bg-secondary transition-colors capitalize"
-                data-testid={`button-nav-${id}`}
+          <div className="md:hidden absolute top-14 left-0 w-full bg-background/98 backdrop-blur-md border-b border-border shadow-xl">
+            {/* Nav links */}
+            <div className="px-4 pt-3 pb-2 flex flex-col gap-0.5">
+              {[
+                { id: "home", label: "Home" },
+                { id: "services", label: "Services" },
+                { id: "testimonials", label: "Testimonials" },
+                { id: "contact", label: "Contact" },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="text-left text-sm font-medium px-3 py-3 rounded-xl hover:bg-secondary transition-colors flex items-center justify-between group"
+                  data-testid={`button-nav-${item.id}`}
+                >
+                  <span>{item.label}</span>
+                  <span className="text-muted-foreground text-xs opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                </button>
+              ))}
+            </div>
+            {/* CTA block */}
+            <div className="px-4 pb-4 pt-2 border-t border-border mt-1">
+              <Button
+                onClick={() => scrollToSection("lead-form")}
+                className="w-full py-5 h-auto text-sm font-semibold shadow-sm"
+                data-testid="button-nav-mobile-cta"
               >
-                {id.charAt(0).toUpperCase() + id.slice(1)}
-              </button>
-            ))}
-            <Button onClick={() => scrollToSection("lead-form")} className="w-full mt-2 mb-1">
-              Get Verified Trader Data
-            </Button>
+                Get Verified Trader Data
+              </Button>
+              <p className="text-center text-xs text-muted-foreground mt-2">Response within 24 hours</p>
+            </div>
           </div>
         )}
       </header>
