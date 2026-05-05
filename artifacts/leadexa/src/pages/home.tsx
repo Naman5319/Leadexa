@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { SiWhatsapp } from "react-icons/si";
-import { Menu, X, BarChart3, Users, CheckCircle2, Zap } from "lucide-react";
+import { Menu, X, BarChart3, Users, CheckCircle2, Zap, Database, RefreshCw, ShieldCheck, Lock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -262,6 +262,108 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* DATA TRUST SECTION */}
+      <section className="py-24 px-4 bg-gradient-to-br from-[hsl(222,47%,8%)] to-[hsl(250,60%,12%)] text-white relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 pointer-events-none opacity-10">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="text-center mb-16"
+          >
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary mb-4 border border-primary/30 rounded-full px-4 py-1 bg-primary/10">
+              How Our Data Works
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-5 text-white">
+              A Data Pool Built for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Serious Results</span>
+            </h2>
+            <p className="text-white/60 max-w-2xl mx-auto text-lg leading-relaxed">
+              We work with a large and continuously expanding pool of Indian traders data, carefully maintained to ensure it remains fresh, relevant, and usable for real business outcomes.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+            {[
+              {
+                icon: <Database size={22} />,
+                title: "Continuously Growing Pool",
+                body: "Our dataset is not static. We continuously expand and onboard new trader profiles, ensuring you always have access to the latest market participants — not stale records from months ago.",
+                color: "text-primary",
+                bg: "bg-primary/10 border-primary/20",
+              },
+              {
+                icon: <RefreshCw size={22} />,
+                title: "Structured & Refined Regularly",
+                body: "Our systems regularly refine and structure the data with meaningful insights, helping you reach traders who are more likely to engage with your product or service.",
+                color: "text-accent",
+                bg: "bg-accent/10 border-accent/20",
+              },
+              {
+                icon: <Lock size={22} />,
+                title: "Controlled Distribution",
+                body: "To maintain quality and reduce oversaturation, we follow a controlled distribution approach. Datasets shared with clients are not widely reused, allowing you to work with more exclusive and effective data.",
+                color: "text-primary",
+                bg: "bg-primary/10 border-primary/20",
+              },
+              {
+                icon: <ShieldCheck size={22} />,
+                title: "Compliance-First Approach",
+                body: "Every dataset we deliver is handled with adherence to applicable data usage policies. We take compliance seriously so you can run your campaigns with confidence.",
+                color: "text-accent",
+                bg: "bg-accent/10 border-accent/20",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
+              >
+                <div className={`rounded-2xl border p-8 h-full flex flex-col gap-4 ${item.bg} backdrop-blur-sm`}>
+                  <div className={`w-11 h-11 rounded-lg bg-white/5 flex items-center justify-center ${item.color}`}>
+                    {item.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                  <p className="text-white/60 text-sm leading-relaxed">{item.body}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Bottom trust bar */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="border border-white/10 rounded-2xl p-8 bg-white/5 backdrop-blur-sm"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              {[
+                { value: "10L+", label: "Trader Profiles" },
+                { value: "98%", label: "Data Accuracy" },
+                { value: "Weekly", label: "Refresh Cycle" },
+                { value: "Exclusive", label: "Distribution Policy" },
+              ].map((stat, i) => (
+                <div key={i} data-testid={`stat-${stat.label.toLowerCase().replace(/\s+/g, "-")}`}>
+                  <p className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-1">{stat.value}</p>
+                  <p className="text-sm text-white/50 font-medium">{stat.label}</p>
+                </div>
+              ))}
             </div>
           </motion.div>
         </div>
